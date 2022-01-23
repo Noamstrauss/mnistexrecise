@@ -30,7 +30,7 @@ module "ec2_instances" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "2.12.0"
 
-  name           = "dev-ec2"
+  name           = "prod-ec2"
   instance_count = 1
 
   ami                    = "ami-001089eb624938d9f"
@@ -40,6 +40,6 @@ module "ec2_instances" {
 
   tags = {
     Terraform   = "true"
-    Environment = "dev"
+    Environment = "prod"
   }
 }
