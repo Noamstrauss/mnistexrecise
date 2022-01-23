@@ -37,7 +37,7 @@ pipeline {
 
 
             # YOUR COMMANDS HERE
-            terraform apply
+            terraform apply -auto-approve
         }
     }
   }
