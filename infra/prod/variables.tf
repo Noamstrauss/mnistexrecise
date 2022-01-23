@@ -1,7 +1,7 @@
 variable "vpc_name" {
   description = "Name of VPC"
   type        = string
-  default     = "dev-vpc"
+  default     = "prod-vpc"
 }
 
 variable "vpc_cidr" {
@@ -39,6 +39,6 @@ variable "vpc_tags" {
   type        = map(string)
   default = {
     Terraform   = "true"
-    Environment = "dev"
+    Environment = "prod"
   }
 }
