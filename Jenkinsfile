@@ -17,7 +17,8 @@ pipeline {
             fi
 
             # YOUR COMMANDS HERE
-            '''
+            terraform Init
+            terraform plan
         }
     }
 
@@ -36,7 +37,7 @@ pipeline {
 
 
             # YOUR COMMANDS HERE
-            '''
+            terraform apply
         }
     }
   }
