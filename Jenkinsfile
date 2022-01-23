@@ -24,7 +24,7 @@ pipeline {
     stage('Terraform Apply'){
         when { anyOf {branch "master";branch "dev"} }
         input {
-            message "Do you want to proceed for infrastructure provisioning?"
+            message "Do you want to proceed for infrastructure provisioning? "
         }
         steps {
             sh '''
