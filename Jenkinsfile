@@ -36,7 +36,7 @@ pipeline {
             fi
 
 
-            # YOUR COMMANDS HERE
+            #  YOUR COMMANDS HERE
             terraform apply -auto-approve
         }
     }
