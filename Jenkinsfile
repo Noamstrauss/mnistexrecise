@@ -30,8 +30,10 @@ pipeline {
             sh '''
             if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
                 INFRA_ENV=infra/prod
+                cd $INFRA_ENV
             else
                 INFRA_ENV=infra/dev
+                cd $INFRA_ENV
             fi
             terraform apply -auto-approve
             '''
