@@ -3,7 +3,7 @@ pipeline {
 
 // Don't forget to make use in the relevant places:
 // copyArtifacts filter: '...your..terraform..state..path...', projectName: '${JOB_NAME}'
-// archiveArtifacts artifacts: '...your..terraform..state..path...', onlyIfSuccessful: true
+//  archiveArtifacts artifacts: '...your..terraform..state..path...', onlyIfSuccessful: true
 
   stages {
     stage('Terraform Init & Plan'){
