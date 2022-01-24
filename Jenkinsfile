@@ -11,11 +11,13 @@ pipeline {
         steps {
             sh '''
             if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
-                copyArtifacts filter: 'terraform.tfstate', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
+
                 cd infra/prod
+                copyArtifacts filter: 'terraform.tfstate', projectName: '${JOB_NAME}'
             else
-                copyArtifacts filter: 'terraform.tfstate', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
                 cd infra/dev
+                copyArtifacts filter: 'terraform.tfstate', projectName: '${JOB_NAME}'
+
             fi
             terraform init
             terraform plan
@@ -40,7 +42,7 @@ pipeline {
             terraform apply -auto-approve
 
             '''
-            archiveArtifacts artifacts: 'terraform.tfstate', fingerprint: true
+            archiveArtifacts artifacts: '$INFRA_ENV/terraform.tfstate', onlyIfSuccessful: true
         }
     }
   }
