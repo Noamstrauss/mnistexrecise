@@ -11,8 +11,10 @@ pipeline {
         steps {
             sh '''
             if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
+                copyArtifacts (projectName: 'mnistexrecise')
                 cd infra/prod
             else
+                copyArtifacts (projectName: 'mnistexrecise')
                 cd infra/dev
             fi
             terraform init
@@ -36,6 +38,7 @@ pipeline {
                 cd $INFRA_ENV
             fi
             terraform apply -auto-approve
+            archiveArtifacts terraform.tfstate
             '''
         }
     }
