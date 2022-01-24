@@ -20,7 +20,7 @@ pipeline {
             fi
             terraform init
             terraform plan
-            """copyArtifacts filter: '$INFRA_ENV/terraform.tfstate', projectName: '${JOB_NAME}'"""
+            copyArtifacts filter: '$INFRA_ENV/terraform.tfstate', projectName: '${JOB_NAME}'
             '''
         }
     }
