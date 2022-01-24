@@ -11,16 +11,16 @@ pipeline {
         steps {
             sh '''
             if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
-
-                cd infra/prod
-                copyArtifacts filter: 'infra/prod/terraform.tfstate', projectName: '${JOB_NAME}'
+                INFRA_ENV=infra/prod
+                cd $INFRA_ENV
             else
-                cd infra/dev
-                copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'
+                INFRA_ENV=infra/dev
+                cd $INFRA_ENV
 
             fi
             terraform init
             terraform plan
+            """copyArtifacts filter: '$INFRA_ENV/terraform.tfstate', projectName: '${JOB_NAME}'"""
             '''
         }
     }
