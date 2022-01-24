@@ -14,7 +14,7 @@ pipeline {
                 copyArtifacts (projectName: 'mnistexrecise')
                 cd infra/prod
             else
-                copyArtifacts (projectName: 'mnistexrecise')
+                copyArtifacts filter: 'terraform.tfstate', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
                 cd infra/dev
             fi
             terraform init
@@ -38,8 +38,9 @@ pipeline {
                 cd $INFRA_ENV
             fi
             terraform apply -auto-approve
-            archiveArtifacts terraform.tfstate
+
             '''
+            archiveArtifacts artifacts: 'terraform.tfstate', fingerprint: true
         }
     }
   }
