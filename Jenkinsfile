@@ -3,7 +3,7 @@ pipeline {
 
 // Don't forget to make use in the relevant places:
 // copyArtifacts filter: '...your..terraform..state..path...', projectName: '${JOB_NAME}'
-//  archiveArtifacts artifacts: '...your..terraform..state..path...', onlyIfSuccessful: true
+// archiveArtifacts artifacts: '...your..terraform..state..path...', onlyIfSuccessful: true
 
   stages {
     stage('Terraform Init & Plan'){
@@ -13,14 +13,11 @@ pipeline {
             if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
 
                 cd infra/prod
-                '''
-                copyArtifacts filter: 'terraform.tfstate', projectName: '${JOB_NAME}'
-            sh '''
+                copyArtifacts filter: 'infra/prod/terraform.tfstate', projectName: '${JOB_NAME}'
             else
                 cd infra/dev
-                '''
-                copyArtifacts filter: 'terraform.tfstate', projectName: '${JOB_NAME}'
-            sh '''
+                copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'
+
             fi
             terraform init
             terraform plan
