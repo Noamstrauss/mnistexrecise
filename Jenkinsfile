@@ -11,7 +11,7 @@ pipeline {
         steps {
             sh '''
             if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
-                copyArtifacts (projectName: 'mnistexrecise')
+                copyArtifacts filter: 'terraform.tfstate', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
                 cd infra/prod
             else
                 copyArtifacts filter: 'terraform.tfstate', fingerprintArtifacts: true, projectName: '${JOB_NAME}', selector: specific('${BUILD_NUMBER}')
