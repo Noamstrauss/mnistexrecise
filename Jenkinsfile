@@ -10,11 +10,11 @@ pipeline {
         when { anyOf {branch "master";branch "dev";changeRequest()} }
         steps {
             sh
-            if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
+          sh  if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
 
              sh cd infra/prod
                 copyArtifacts filter: 'terraform.tfstate', projectName: '${JOB_NAME}'
-            else
+          sh   else
              sh cd infra/dev
                 copyArtifacts filter: 'terraform.tfstate', projectName: '${JOB_NAME}'
 
