@@ -9,19 +9,19 @@ pipeline {
     stage('Terraform Init & Plan'){
         when { anyOf {branch "master";branch "dev";changeRequest()} }
         steps {
-            sh '''
+            sh
             if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
 
-                cd infra/prod
+             sh cd infra/prod
                 copyArtifacts filter: 'terraform.tfstate', projectName: '${JOB_NAME}'
             else
-                cd infra/dev
+             sh cd infra/dev
                 copyArtifacts filter: 'terraform.tfstate', projectName: '${JOB_NAME}'
 
             fi
-            terraform init
-            terraform plan
-            '''
+            sh terraform init
+            sh terraform plan
+
         }
     }
 
