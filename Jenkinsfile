@@ -12,7 +12,7 @@ pipeline {
         steps {
             sh '''
             if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
-                ${env}=infra/prod
+                ${env}="infra/prod"
                 echo 'you env is ${env}'
                 cd $env
             else
