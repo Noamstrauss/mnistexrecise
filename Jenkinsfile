@@ -16,6 +16,7 @@ pipeline {
                 echo 'you env is ${env}'
                 cd $env
             else
+                echo 'you env is ${env}'
                 cd ${env}
 
             fi
