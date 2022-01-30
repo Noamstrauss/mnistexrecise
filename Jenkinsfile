@@ -44,7 +44,7 @@ pipeline {
             terraform apply -auto-approve
 
             '''
-            archiveArtifacts artifacts: '$env/terraform.tfstate', onlyIfSuccessful: true
+            archiveArtifacts artifacts: '${env}/terraform.tfstate', onlyIfSuccessful: true
         }
     }
   }
