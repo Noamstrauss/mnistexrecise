@@ -1,4 +1,4 @@
-def env= "dev"
+def env="dev"
 pipeline {
   agent any
 
