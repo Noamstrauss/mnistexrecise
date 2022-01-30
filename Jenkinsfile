@@ -1,3 +1,4 @@
+def env= "dev"
 pipeline {
   agent any
 
@@ -11,11 +12,11 @@ pipeline {
         steps {
             sh '''
             if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
-                INFRA_ENV=infra/prod
-                cd $INFRA_ENV
+                ${env}=infra/prod
+                echo 'you env is ${env}'
+                cd $env
             else
-                INFRA_ENV=infra/dev
-                cd $INFRA_ENV
+                cd ${env}
 
             fi
             terraform init
@@ -42,7 +43,7 @@ pipeline {
             terraform apply -auto-approve
 
             '''
-            archiveArtifacts artifacts: $INFRA_ENV'/terraform.tfstate', onlyIfSuccessful: true
+            archiveArtifacts artifacts: '$INFRA_ENV/terraform.tfstate', onlyIfSuccessful: true
         }
     }
   }
