@@ -1,51 +1,60 @@
-def env="dev"
 pipeline {
   agent any
 
-// Don't forget to make use in the relevant places:
-// copyArtifacts filter: '...your..terraform..state..path...', projectName: '${JOB_NAME}'
-// archiveArtifacts artifacts: '...your..terraform..state..path...', onlyIfSuccessful: true
-
   stages {
-    stage('Terraform Init & Plan'){
-        when { anyOf {branch "master";branch "dev";changeRequest()} }
-        steps {
-            sh '''
-            if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
-                env="infra/prod"
-                echo 'you env is ${env}'
-                cd $env
-            else
-                echo 'you env is ${env}'
-                cd $env
-
-            fi
-            terraform init
-            terraform plan
-
-            '''
+        stage('Load Artifact - dev') {
+            when { anyOf {branch "dev"} }
+            steps {
+                copyArtifacts filter: 'infra/dev/terraform.tfstate', projectName: '${JOB_NAME}'
+            }
         }
-    }
 
-    stage('Terraform Apply'){
-        when { anyOf {branch "master";branch "dev"} }
-        input {
-            message "Do you want to proceed for infrastructure provisioning?"
+        stage('Load Artifact - prod') {
+            when { anyOf {branch "master"} }
+            steps {
+                copyArtifacts filter: 'infra/prod/terraform.tfstate', projectName: '${JOB_NAME}'
+            }
         }
-        steps {
-            sh '''
-            if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
-                env="infra/prod"
-                cd $env
-            else
-                env="infra/dev"
-                cd $env
-            fi
-            terraform apply -auto-approve
 
-            '''
-            archiveArtifacts artifacts: '${env}/terraform.tfstate', onlyIfSuccessful: true
+        stage('Terraform Init & Plan'){
+            when { anyOf {branch "master";branch "dev";changeRequest()} }
+            steps {
+                sh '''
+                if [ "$BRANCH_NAME" = "master" ] || [ "$CHANGE_TARGET" = "master" ]; then
+                    cd infra/prod
+                else
+                    cd infra/dev
+                fi
+                echo ${JOB_NAME}
+                terraform init
+                terraform plan
+                '''
+            }
         }
-    }
+
+        stage('Terraform Apply - dev'){
+            when { anyOf {branch "dev"} }
+            steps {
+                sh '''
+                cd infra/dev
+                terraform apply -auto-approve
+                '''
+                archiveArtifacts artifacts: 'infra/dev/terraform.tfstate', onlyIfSuccessful: true
+            }
+        }
+
+        stage('Terraform Apply - prod'){
+            when { anyOf {branch "master"}; }
+            input {
+                message "Do you want to proceed for infrastructure provisioning?"
+            }
+            steps {
+                sh '''
+                cd infra/prod
+                terraform apply -auto-approve
+                '''
+                archiveArtifacts artifacts: 'infra/prod/terraform.tfstate', onlyIfSuccessful: true
+            }
+        }
   }
 }
