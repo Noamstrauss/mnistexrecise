@@ -12,15 +12,15 @@ provider "aws" {
 
 
 
-module "ec2_instances" {
+module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
-  version = "2.12.0"
+  version = "~> 3.0"
 
   name           = "dev-ec2"
-  instance_count = 1
 
   ami                    = "ami-001089eb624938d9f"
   instance_type          = "t2.micro"
+  key_name               = "user1"
 
   tags = {
     Terraform   = "true"
