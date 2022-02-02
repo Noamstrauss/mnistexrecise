@@ -1,37 +1,34 @@
-variable "vpc_name" {
-  description = "Name of VPC"
+variable "noams_key_name" {
+  description = "Noam's_Private_key_name"
   type        = string
-  default     = "dev-vpc"
+  default     = "ohio-int-account"
 }
 
-variable "vpc_cidr" {
-  description = "CIDR block for VPC"
+variable "ami" {
+  description = "AMI image"
   type        = string
-  default     = "10.0.0.0/16"
+  default    = "ami-001089eb624938d9f"
+
 }
 
-variable "vpc_azs" {
-  description = "Availability zones for VPC"
-  type        = list(string)
-  default     = ["us-east-2a", "us-east-2b"]
+
+variable "name" {
+  description = "Instance name"
+  type        = string
+  default     = "dev-ec2"
 }
 
-variable "vpc_private_subnets" {
-  description = "Private subnets for VPC"
-  type        = list(string)
-  default     = ["10.0.1.0/24"]
+
+variable "region" {
+  description = "Region"
+  type        = string
+  default     = "us-east-2"
 }
 
-variable "vpc_public_subnets" {
-  description = "Public subnets for VPC"
-  type        = list(string)
-  default     = ["10.0.101.0/24",]
-}
-
-variable "vpc_enable_nat_gateway" {
-  description = "Enable NAT gateway for VPC"
-  type        = bool
-  default     = true
+variable "instance_type" {
+  description = "instance_type"
+  type        = string
+  default     = "t2.micro"
 }
 
 variable "vpc_tags" {
