@@ -12,7 +12,7 @@ pipeline {
         stage('Load Artifact - prod') {
             when { anyOf {branch "master"} }
             steps {
-                copyArtifacts filter: 'infra/prod/terraform.tfstate', projectName: '${JOB_NAME}'
+                copyArtifacts filter: 'infra/prod/terraform.tfstate ', projectName: '${JOB_NAME}'
             }
         }*/
 
