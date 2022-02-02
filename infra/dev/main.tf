@@ -7,23 +7,19 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-2"
+  region = var.region
 }
-
-
 
 module "ec2_instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> 3.0"
 
-  name           = "dev-ec2"
+  name = var.name
 
-  ami                    = "ami-001089eb624938d9f"
-  instance_type          = "t2.micro"
-  key_name               = "user1"
+  ami                    = var.ami
+  instance_type          = var.instance_type
+  key_name               = var.noams_key_name
+  monitoring             = true
 
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
+  tags = var.vpc_tags
 }
