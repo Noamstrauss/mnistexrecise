@@ -16,7 +16,7 @@ pipeline {
             }
         }*/
 
-        stage('Terraform Init & Plan'){
+        stage('Terraform Init & Plan '){
             when { anyOf {branch "master";branch "dev";changeRequest()} }
             steps {
                 sh '''
